@@ -14,7 +14,7 @@ chrome.browserAction.onClicked.addListener(tab => {
 
             if ((event.data === "error taken" && confirm("Username in use! Change username?")) ||
                 (event.data === "error invalid" &&
-                 confirm("Username has non alphanumeric characters. Change username?") {
+                 confirm("Username has non alphanumeric characters. Change username?")) {
                 chrome.runtime.openOptionsPage();
                 sock.close();
             }
