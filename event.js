@@ -1,4 +1,4 @@
-chrome.browserAction.onClicked.addListener(tab => {
+function queueSong(url) {
     chrome.storage.sync.get("username", items => {
         let username = items.username;
         if (username === undefined) {
@@ -21,7 +21,7 @@ chrome.browserAction.onClicked.addListener(tab => {
 
             if (state === 0) {
             } else if (state === 2) {
-                sock.send("queue " + tab.url);
+                sock.send("queue " + url);
             } else if (state === 3) {
                 sock.close();
             }
@@ -32,6 +32,13 @@ chrome.browserAction.onClicked.addListener(tab => {
             sock.send(username);
         }
     });
+}
+chrome.contextMenus.create({"id": "queue", "title": "Queue on Bridges Jukebox", "contexts":["link"]});
 
+chrome.browserAction.onClicked.addListener(tab => { queueSong(tab.url); });
+chrome.contextMenus.onClicked.addListener((info, tab) => {
+    if (info.menuItemId === "queue") {
+        queueSong(info.linkUrl);
+    }
 });
 
